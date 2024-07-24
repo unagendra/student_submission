@@ -1,9 +1,6 @@
 package com.demo.student_submission;
 
-import com.demo.student_submission.exception.CourseNotFoundException;
-import com.demo.student_submission.exception.ErrorResponse;
-import com.demo.student_submission.exception.GradeNotFoundException;
-import com.demo.student_submission.exception.StudentNotFoundException;
+import com.demo.student_submission.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +26,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 
     //1.GET Request-ID does not exist
 
-    @ExceptionHandler({CourseNotFoundException.class, GradeNotFoundException.class, StudentNotFoundException.class})
+    @ExceptionHandler({CourseNotFoundException.class, GradeNotFoundException.class, StudentNotFoundException.class, StudentNotEnrolledException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
         ErrorResponse error=new ErrorResponse(Collections.singletonList(ex.getMessage()));
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
@@ -49,6 +46,8 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         ErrorResponse error = new ErrorResponse(Arrays.asList("Data Integrity Violation: we cannot process your request."));
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+
 
 
     //Field Validation : PUT and POST
